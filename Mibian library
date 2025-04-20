@@ -1,0 +1,10 @@
+!pip3 install mibian
+import mibian as mb # this library does not contain theta and rho
+c = mb.BS([60, 50, 5, 180], volatility=20)  # 180 days ≈ 0.5 years
+ # Format: BS([spot, strike, interest rate, days until expiration, volatility])
+
+print("Call Price: ", c.callPrice)
+print("Put Price: ", c.putPrice)
+print("Delta :", c.callDelta)
+print("Gamma :", c.gamma)
+print("Vega :", c.vega)
