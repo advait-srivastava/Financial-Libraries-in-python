@@ -1,0 +1,21 @@
+!pip3 install py_vollib
+from py_vollib.black_scholes import black_scholes as bs
+from py_vollib.black_scholes.greeks.analytical import delta, gamma, vega, theta, rho
+# Parameters
+S = 60        # Spot price
+K = 55        # Strike price
+t = 30 / 365  # Time to expiration in years
+r = 0.05      # Risk-free interest rate
+sigma = 0.20  # Volatility
+flag = 'c'    # 'c' for call, 'p' for put
+
+# Option price
+call_price = bs(flag, S, K, t, r, sigma)
+print("Call Price:", round(call_price, 4))
+
+# Greeks
+print("Delta:", round(delta(flag, S, K, t, r, sigma), 4))
+print("Gamma:", round(gamma(flag, S, K, t, r, sigma), 4))
+print("Vega:", round(vega(flag, S, K, t, r, sigma), 4))
+print("Theta:", round(theta(flag, S, K, t, r, sigma), 4))
+print("Rho:", round(rho(flag, S, K, t, r, sigma), 4))
