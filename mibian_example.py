@@ -1,4 +1,4 @@
-!pip3 install mibian
+# Requires: pip3 install mibian
 import mibian as mb # this library does not contain theta and rho
 c = mb.BS([60, 50, 5, 180], volatility=20)  # 180 days ≈ 0.5 years
  # Format: BS([spot, strike, interest rate, days until expiration, volatility])

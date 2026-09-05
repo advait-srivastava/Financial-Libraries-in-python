@@ -5,7 +5,7 @@ stock price prediction.
 
 ## Contents
 
-### `py_vollib library`
+### `py_vollib_example.py`
 Black-Scholes option pricing and the full set of Greeks (delta, gamma, vega,
 theta, rho) using [`py_vollib`](https://github.com/vollib/py_vollib).
 
@@ -16,7 +16,7 @@ from py_vollib.black_scholes.greeks.analytical import delta, gamma, vega, theta,
 call_price = bs('c', S=60, K=55, t=30/365, r=0.05, sigma=0.20)
 ```
 
-### `Mibian library`
+### `mibian_example.py`
 The same Black-Scholes pricing via [`mibian`](https://github.com/yassinemaaroufi/MibianLib) —
 a simpler API, but note it doesn't provide theta or rho (only price, delta,
 gamma, vega).
@@ -38,5 +38,6 @@ prediction, evaluated with MSE and R².
 ## Setup
 
 ```bash
-pip install py_vollib mibian yfinance pandas numpy scikit-learn matplotlib seaborn
+pip install -r requirements.txt        # py_vollib, mibian
+pip install yfinance pandas numpy scikit-learn matplotlib seaborn   # notebook only
 ```
