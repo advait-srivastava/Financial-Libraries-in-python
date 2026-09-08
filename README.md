@@ -28,10 +28,36 @@ print(c.callPrice, c.callDelta, c.gamma, c.vega)
 ```
 
 ### `Stock_Price_Predictor_ML.ipynb`
-A Google Colab notebook that pulls historical price data for a stock
-(ZOMATO.NS, via `yfinance`) and compares three regression models —
-Linear Regression, Decision Tree, and Random Forest — for next-day price
-prediction, evaluated with MSE and R².
+Compares Linear Regression, a Decision Tree and a Random Forest at forecasting
+the **forward 25-day return** of ETERNAL.NS (formerly ZOMATO.NS), pulled with
+`yfinance`. The headline result is negative — none of the three beats a random
+walk — and the notebook is built around showing why that is the trustworthy
+answer.
+
+An earlier version reported R² ≈ 0.98. That number came from three mistakes,
+which the notebook now reproduces in Section 1 before fixing:
+
+| | Original | Now |
+|---|---|---|
+| Split | `train_test_split(..., random_state=42)` — shuffled, so test rows sit between train rows on the calendar | Chronological, with a 25-day purge gap at the boundary |
+| Target | `Close.shift(-25)` — a price **level**, with `Close` as an input feature | `log(Close_{t+25} / Close_t)` — a **return** |
+| Features | OHLCV levels | Multi-horizon returns, realised vol, ATR, volume z-score |
+| Baseline | none | Random walk (forward return = 0), plus walk-forward validation |
+| Reported R² | 0.977 | negative — the models lose to the baseline |
+
+The three numbers that make the point, same model and data throughout:
+
+```
+(a) shuffled split, price levels     R2 =  0.9448   <- the old headline
+(b) naive 'in 25 days = today'       R2 =  0.9439   <- no model at all
+(c) same model, chronological split  R2 =  0.1670   <- out of sample
+```
+
+Line (b) is the tell: against a price-level target with `Close` as a feature,
+R² measures autocorrelation, not skill, so a forecast that ignores the data
+entirely scores 0.94. The model's actual contribution was +0.0009 R².
+
+Runs in Colab or locally — no `google.colab` imports, and no CSV round-trip.
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/advait-srivastava/Financial-Libraries-in-python/blob/main/Stock_Price_Predictor_ML.ipynb)
 
@@ -39,5 +65,5 @@ prediction, evaluated with MSE and R².
 
 ```bash
 pip install -r requirements.txt        # py_vollib, mibian
-pip install yfinance pandas numpy scikit-learn matplotlib seaborn   # notebook only
+pip install yfinance pandas numpy scikit-learn matplotlib   # notebook only
 ```
